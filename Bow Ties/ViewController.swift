@@ -101,7 +101,18 @@ class ViewController: UIViewController {
     }
     
     @IBAction func segmentedControl(control: UISegmentedControl) {
+        let selectedValue = control.titleForSegmentAtIndex(control.selectedSegmentIndex)
+
+        let request = NSFetchRequest(entityName: "Bowtie")
+        request.predicate = NSPredicate(format: "searchKey == %@", selectedValue!)
         
+        do {
+            let results = try self.managedContext.executeFetchRequest(request) as! [Bowtie]
+            self.currentBowtie = results.first
+            self.populate(self.currentBowtie)
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
     }
     
     @IBAction func wear(sender: AnyObject) {
