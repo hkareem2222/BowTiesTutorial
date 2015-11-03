@@ -147,6 +147,10 @@ class ViewController: UIViewController {
             self.populate(self.currentBowtie)
         } catch let error as NSError {
             print("Could not save \(error), \(error.localizedDescription)")
+            
+            if error.domain == NSCocoaErrorDomain && (error.code == NSValidationNumberTooLargeError || error.code == NSValidationNumberTooSmallError) {
+                self.rate(currentBowtie)
+            }
         }
     }
 }
